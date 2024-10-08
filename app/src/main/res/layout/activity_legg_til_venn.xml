@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/tekstNavn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Navn"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/tekstTelefon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Telefon"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/tekstBursdag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Bursdag (YYYY-MM-DD)"
+        android:inputType="date" />
+
+    <Button
+        android:id="@+id/knappLagre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lagre" />
+</LinearLayout>
