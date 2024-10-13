@@ -1,20 +1,16 @@
 package com.example.oblig2s375045s375063;
 
 public class Venn {
-    private int id; // Unik ID for hver venn
+    private long id; // Unik ID for hver venn
     private String navn;
     private String telefon;
     private String bursdag;
 
-    public Venn(int id, String navn, String telefon, String bursdag) {
-        this.id = id;
-        this.navn = navn;
-        this.telefon = telefon;
-        this.bursdag = bursdag;
+    public Venn() {
     }
 
     // Gettere
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -28,5 +24,22 @@ public class Venn {
 
     public String getBursdag() {
         return bursdag;
+    }
+
+    // Settere
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setNavn(String navn) {
+        this.navn = navn;
+    }
+
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
+    }
+
+    public void setBursdag(String bursdag) {
+        this.bursdag = bursdag;
     }
 }
