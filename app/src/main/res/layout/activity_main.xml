@@ -8,38 +8,81 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp" tools:context=".MainActivity">
+        android:padding="16dp"
+        tools:context=".MainActivity">
+
+        <!-- Nytt EditText-felt for Navn -->
         <EditText
-            android:layout_width="wrap_content"
+            android:id="@+id/navnEditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"/>
+            android:hint="Skriv inn navn"
+            android:inputType="textPersonName"/>
+
+        <!-- Nytt EditText-felt for Telefon -->
+        <EditText
+            android:id="@+id/telefonEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Skriv inn telefonnummer"
+            android:inputType="phone"/>
+
+        <!-- Nytt EditText-felt for Bursdag -->
+        <EditText
+            android:id="@+id/bursdagEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Skriv inn bursdag"
+            android:inputType="date"/>
+
+        <!-- Nytt EditText-felt for Venn -->
+        <EditText
+            android:id="@+id/vennEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Skriv inn vennens navn"
+            android:inputType="textPersonName"/>
+
+        <!-- Tidligere eksisterende EditText -->
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- Knapp for å vise alle -->
         <Button
             android:id="@+id/visalle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="visAlle"
             android:text="Vis Alle" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/visview"/>
 
+        <!-- TextView for å vise innhold -->
+        <TextView
+            android:id="@+id/visview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- Knapp for å legge til data -->
         <Button
+            android:id="@+id/leggtil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Legg til"
-            android:id="@+id/leggtil"
-            android:onClick="leggtil"/>
+            android:onClick="leggtil"
+            android:text="Legg til" />
+
+        <!-- Knapp for å slette data -->
         <Button
             android:id="@+id/slett"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="slett"
             android:text="Slett" />
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

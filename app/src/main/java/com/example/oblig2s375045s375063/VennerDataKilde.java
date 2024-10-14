@@ -49,4 +49,18 @@ public class VennerDataKilde {
     public void slettVenn(long vennId) {
         database.delete(DatabaseHjelper.TABELL_VENNER, DatabaseHjelper.KOLONNE_ID + "=?", new String[]{Long.toString(vennId)});
     }
+    public List<Venn> finnAlleVenner() {
+        Venn venn=new Venn();
+        List<Venn> oppgaver = new ArrayList<>();
+        Cursor cursor = database.query(DatabaseHjelper.TABELL_VENNER, null, null, null, null,
+                null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                venn = cursorTilVenn(cursor);
+                oppgaver.add(venn);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return oppgaver;
+    }
 }

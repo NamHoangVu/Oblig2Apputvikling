@@ -37,40 +37,5 @@ public class DatabaseHjelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABELL_VENNER);
             onCreate(db);
     }
-
-    // Metoder for å håndtere data i databasen
-
-    public void leggTilVenn(String navn, String telefon, String bursdag) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues verdier = new ContentValues();
-        verdier.put(KOLONNE_NAVN, navn);
-        verdier.put(KOLONNE_TELEFON, telefon);
-        verdier.put(KOLONNE_BURSDAG, bursdag);
-
-        db.insert(TABELL_NAVN, null, verdier);
-        db.close();
-    }
-
-    public Cursor hentAlleVenner() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABELL_NAVN, null);
-    }
-
-    public void oppdaterVenn(int id, String navn, String telefon, String bursdag) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues verdier = new ContentValues();
-        verdier.put(KOLONNE_NAVN, navn);
-        verdier.put(KOLONNE_TELEFON, telefon);
-        verdier.put(KOLONNE_BURSDAG, bursdag);
-
-        db.update(TABELL_NAVN, verdier, KOLONNE_ID + " = ?", new String[]{String.valueOf(id)});
-        db.close();
-    }
-
-    public void slettVenn(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABELL_NAVN, KOLONNE_ID + " = ?", new String[]{String.valueOf(id)});
-        db.close();
-    }
 }
 

@@ -66,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
     public void slett(View v) {
-        long vennId =
-                Long.parseLong(String.valueOf(vennEditText.getText()));
+        long vennId = Long.parseLong(String.valueOf(vennEditText.getText()));
         dataKilde.slettVenn(vennId);
     }
     public void visAlle(View v) {
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         for (Venn venn : venner) {
             tekst = tekst + " " + venn.getNavn();
         }
-        tekstView.setText(tekst);
+        textView.setText(tekst);
     }
 
 
