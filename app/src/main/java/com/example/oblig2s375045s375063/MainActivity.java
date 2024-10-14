@@ -70,5 +70,14 @@ public class MainActivity extends AppCompatActivity {
                 Long.parseLong(String.valueOf(vennEditText.getText()));
         dataKilde.slettVenn(vennId);
     }
+    public void visAlle(View v) {
+        String tekst = "";
+        List<Venn> oppgaver = dataKilde.finnAlleVenner();
+        for (Venn venn : venner) {
+            tekst = tekst + " " + venn.getNavn();
+        }
+        tekstView.setText(tekst);
+    }
+
 
 }

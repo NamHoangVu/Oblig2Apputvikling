@@ -19,10 +19,27 @@
             android:layout_height="wrap_content"
             android:id="@+id/editText"/>
         <Button
+            android:id="@+id/visalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="visAlle"
+            android:text="Vis Alle" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/visview"/>
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Legg til"
             android:id="@+id/leggtil"
             android:onClick="leggtil"/>
+        <Button
+            android:id="@+id/slett"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="slett"
+            android:text="Slett" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
