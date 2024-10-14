@@ -36,8 +36,9 @@
             android:id="@+id/bursdagEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Skriv inn bursdag"
-            android:inputType="date"/>
+            android:hint="Velg bursdag"
+            android:focusable="false"
+            android:clickable="true" />
 
         <!-- Nytt EditText-felt for Venn -->
         <EditText

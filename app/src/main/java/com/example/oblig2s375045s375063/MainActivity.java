@@ -1,8 +1,10 @@
 package com.example.oblig2s375045s375063;
 
+import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -11,10 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,14 +35,38 @@ public class MainActivity extends AppCompatActivity {
                     systemBars.bottom);
             return insets;
         });
+
+        // Åpne databasen
         dataKilde = new VennerDataKilde(this);
         dataKilde.open();
+
+        // Finn EditTexts og TextView
         navnEditText = findViewById(R.id.navnEditText);
         telefonEditText = findViewById(R.id.telefonEditText);
         bursdagEditText = findViewById(R.id.bursdagEditText);
         vennEditText = findViewById(R.id.vennEditText);
-        // men brukes senere tekstView=findViewById(R.id.visview);
+        // tekstView brukes senere
+        textView = findViewById(R.id.visview);
+
+        // Set up DatePickerDialog for bursdagEditText
+        bursdagEditText.setOnClickListener(v -> {
+            // Få dagens dato som standard
+            final Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH);
+            int year = calendar.get(Calendar.YEAR);
+
+            // Åpne DatePickerDialog
+            DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
+                    (view, selectedYear, selectedMonth, selectedDay) -> {
+                        // Oppdater EditText med den valgte datoen
+                        bursdagEditText.setText(selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear);
+                    }, year, month, day);
+            datePickerDialog.show();
+        });
     }
+
+    // Legg til venn-funksjon
     public void leggtil(View v) {
         String navn = navnEditText.getText().toString();
         String telefon = telefonEditText.getText().toString();
@@ -60,23 +84,26 @@ public class MainActivity extends AppCompatActivity {
         dataKilde.open();
         super.onResume();
     }
+
     @Override
     protected void onPause() {
         dataKilde.close();
         super.onPause();
     }
+
+    // Slett venn-funksjon
     public void slett(View v) {
         long vennId = Long.parseLong(String.valueOf(vennEditText.getText()));
         dataKilde.slettVenn(vennId);
     }
+
+    // Vis alle venner-funksjon
     public void visAlle(View v) {
         String tekst = "";
-        List<Venn> oppgaver = dataKilde.finnAlleVenner();
+        List<Venn> venner = dataKilde.finnAlleVenner();
         for (Venn venn : venner) {
-            tekst = tekst + " " + venn.getNavn();
+            tekst += " " + venn.getNavn();
         }
         textView.setText(tekst);
     }
-
-
 }
