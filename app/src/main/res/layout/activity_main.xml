@@ -8,6 +8,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,20 +45,6 @@
             android:focusable="false"
             android:clickable="true" />
 
-        <!-- Nytt EditText-felt for Venn -->
-        <EditText
-            android:id="@+id/vennEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Skriv inn vennens navn"
-            android:inputType="textPersonName"/>
-
-        <!-- Tidligere eksisterende EditText -->
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
         <!-- Knapp for å vise alle -->
         <Button
             android:id="@+id/visalle"
@@ -61,12 +52,6 @@
             android:layout_height="wrap_content"
             android:onClick="visAlle"
             android:text="Vis Alle" />
-
-        <!-- TextView for å vise innhold -->
-        <TextView
-            android:id="@+id/visview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
         <!-- Knapp for å legge til data -->
         <Button
@@ -83,6 +68,13 @@
             android:layout_height="wrap_content"
             android:onClick="slett"
             android:text="Slett" />
+
+        <!-- TextView for å vise innhold -->
+        <TextView
+            android:id="@+id/visview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
 
     </LinearLayout>
 

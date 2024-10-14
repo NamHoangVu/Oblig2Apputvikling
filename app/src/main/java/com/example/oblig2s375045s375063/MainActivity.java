@@ -7,17 +7,25 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements VennAdapter.OnVennClickListener {
+
+    private RecyclerView recyclerView;
+    private VennAdapter vennAdapter;
+    private VennAdapter.OnVennClickListener listen;
 
     private List<Venn> venner;
     private VennerDataKilde dataKilde;
@@ -29,12 +37,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right,
                     systemBars.bottom);
             return insets;
         });
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        List<Venn> VennList = new ArrayList<>();
+        vennAdapter = new VennAdapter(VennList, this);
+        recyclerView.setAdapter(vennAdapter);
 
         // Åpne databasen
         dataKilde = new VennerDataKilde(this);
@@ -44,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         navnEditText = findViewById(R.id.navnEditText);
         telefonEditText = findViewById(R.id.telefonEditText);
         bursdagEditText = findViewById(R.id.bursdagEditText);
-        vennEditText = findViewById(R.id.vennEditText);
         // tekstView brukes senere
         textView = findViewById(R.id.visview);
 
@@ -64,9 +79,14 @@ public class MainActivity extends AppCompatActivity {
                     }, year, month, day);
             datePickerDialog.show();
         });
+        visAlle();
     }
 
-    // Legg til venn-funksjon
+    @Override
+    public void onItemClick(Venn venn) {
+    }
+
+// Legg til venn-funksjon
     public void leggtil(View v) {
         String navn = navnEditText.getText().toString();
         String telefon = telefonEditText.getText().toString();
@@ -98,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Vis alle venner-funksjon
-    public void visAlle(View v) {
+    public void visAlle() {
         String tekst = "";
         List<Venn> venner = dataKilde.finnAlleVenner();
         for (Venn venn : venner) {
-            tekst += " " + venn.getNavn();
+            tekst += " " + venn.getId() + ": " + venn.getNavn() + ", " + venn.getTelefon() + ", " + venn.getBursdag() + "\n";
         }
         textView.setText(tekst);
     }
