@@ -20,6 +20,12 @@
         android:padding="16dp"
         tools:context=".MainActivity">
 
+        <!-- TextView for å vise innhold -->
+        <TextView
+            android:id="@+id/visview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <!-- Nytt EditText-felt for Navn -->
         <EditText
             android:id="@+id/navnEditText"
@@ -68,13 +74,6 @@
             android:layout_height="wrap_content"
             android:onClick="slett"
             android:text="Slett" />
-
-        <!-- TextView for å vise innhold -->
-        <TextView
-            android:id="@+id/visview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
 
     </LinearLayout>
 
