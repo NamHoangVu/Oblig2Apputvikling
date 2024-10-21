@@ -16,9 +16,11 @@ public class VennerDataKilde {
     public VennerDataKilde(Context context) {
         dbHjelper = new DatabaseHjelper(context);
     }
+
     public void open() throws SQLException {
         database = dbHjelper.getWritableDatabase();
     }
+
     public void close() {
         dbHjelper.close();
     }
@@ -28,8 +30,7 @@ public class VennerDataKilde {
         values.put(DatabaseHjelper.KOLONNE_NAVN, navn);
         values.put(DatabaseHjelper.KOLONNE_TELEFON, telefon);
         values.put(DatabaseHjelper.KOLONNE_BURSDAG, bursdag);
-        long insertId = database.insert(DatabaseHjelper.TABELL_VENNER, null,
-                values);
+        long insertId = database.insert(DatabaseHjelper.TABELL_VENNER, null, values);
         Cursor cursor = database.query(DatabaseHjelper.TABELL_VENNER, null,
                 DatabaseHjelper.KOLONNE_ID + " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
@@ -37,6 +38,7 @@ public class VennerDataKilde {
         cursor.close();
         return nyVenn;
     }
+
     private Venn cursorTilVenn(Cursor cursor) {
         Venn venn = new Venn();
         venn.setId(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHjelper.KOLONNE_ID)));
@@ -49,18 +51,37 @@ public class VennerDataKilde {
     public void slettVenn(long vennId) {
         database.delete(DatabaseHjelper.TABELL_VENNER, DatabaseHjelper.KOLONNE_ID + "=?", new String[]{Long.toString(vennId)});
     }
+
     public List<Venn> finnAlleVenner() {
-        Venn venn=new Venn();
         List<Venn> venner = new ArrayList<>();
-        Cursor cursor = database.query(DatabaseHjelper.TABELL_VENNER, null, null, null, null,
-                null, null);
+        Cursor cursor = database.query(DatabaseHjelper.TABELL_VENNER, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                venn = cursorTilVenn(cursor);
+                Venn venn = cursorTilVenn(cursor);
                 venner.add(venn);
             } while (cursor.moveToNext());
         }
         cursor.close();
         return venner;
+    }
+
+    // Ny metode for å hente venner som har bursdag i dag
+    public List<Venn> hentVennerMedBursdag(String bursdagsdato) {
+        List<Venn> vennerMedBursdag = new ArrayList<>();
+
+        // SQL-spørring for å finne venner med bursdag på en bestemt dato
+        String selection = DatabaseHjelper.KOLONNE_BURSDAG + " = ?";
+        String[] selectionArgs = { bursdagsdato };
+
+        Cursor cursor = database.query(DatabaseHjelper.TABELL_VENNER, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Venn venn = cursorTilVenn(cursor);
+                vennerMedBursdag.add(venn);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return vennerMedBursdag;
     }
 }
