@@ -23,6 +23,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements VennAdapter.OnVennClickListener {
 
+    private SmsHandler smsHandler;
+
     private RecyclerView recyclerView;
     private VennAdapter vennAdapter;
     private VennAdapter.OnVennClickListener listen;
@@ -37,6 +39,12 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // Opprett SmsHandler
+        SmsHandler smsHandler = new SmsHandler(this);
+
+        // Eksempel på å sende en SMS ved oppstart
+        smsHandler.sendSms("1234567890", "Gratulerer med dagen");
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -80,6 +88,17 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             datePickerDialog.show();
         });
         visAlle();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Initialiser SmsHandler
+        SmsHandler smsHandler = new SmsHandler(this);
+
+        // Send SMS hvis tillatelse er gitt
+        smsHandler.onRequestPermissionsResult(requestCode, grantResults);
     }
 
     @Override
