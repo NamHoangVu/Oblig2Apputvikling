@@ -11,7 +11,7 @@ public class MinBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         boolean isEnabled = intent.getBooleanExtra("sms_service_enabled", false);
         if (isEnabled) {
-            Intent i = new Intent(context, MinSendService.class);
+            Intent i = new Intent(context, MinPeriodisk.class);
             context.startService(i);
         }
     }
