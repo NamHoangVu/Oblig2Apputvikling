@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +41,20 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        Button openPreferencesButton = findViewById(R.id.open_preferences_button);
+
+        // Sett OnClickListener for knappen
+        openPreferencesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Åpne preferansefragmentet
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.settings_container, new PreferanseFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         // Opprett SmsHandler
         SmsHandler smsHandler = new SmsHandler(this);

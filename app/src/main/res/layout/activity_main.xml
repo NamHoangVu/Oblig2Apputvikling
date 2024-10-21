@@ -8,6 +8,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/settings_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -51,13 +60,16 @@
             android:focusable="false"
             android:clickable="true" />
 
-        <!-- Knapp for å vise alle -->
+        <!-- Knapp for å Preferanser -->
         <Button
-            android:id="@+id/visalle"
+            android:id="@+id/open_preferences_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="visAlle"
-            android:text="Vis Alle" />
+            android:text="Preferanser"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
         <!-- Knapp for å legge til data -->
         <Button

@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-  
-</PreferenceScreen>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/black"> <!-- Setter bakgrunnen til hvit -->
+
+    <!-- Slå SMS-tjenesten av/på -->
+    <SwitchPreferenceCompat
+        android:key="sms_service_enabled"
+        android:title="SMS-tjeneste"
+        android:summary="Slå av/på SMS-tjenesten"
+        android:defaultValue="false" />
+
+    <!-- Velg tidspunkt for når SMS skal sendes -->
+    <Preference
+        android:key="sms_time"
+        android:title="Velg tidspunkt"
+        android:summary="Standard: 08:00"
+        android:defaultValue="08:00" />
+
+    <!-- Sett standard SMS-melding -->
+    <EditTextPreference
+        android:key="sms_message"
+        android:title="Standardmelding"
+        android:summary="Sett meldingen som skal sendes"
+        android:defaultValue="Hei, dette er en automatisk SMS." />
+
+</androidx.preference.PreferenceScreen>
