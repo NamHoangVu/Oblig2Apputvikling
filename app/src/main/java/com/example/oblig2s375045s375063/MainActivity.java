@@ -45,16 +45,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         Button openPreferencesButton = findViewById(R.id.open_preferences_button);
 
         // Sett OnClickListener for knappen
-        openPreferencesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Åpne preferansefragmentet
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.settings_container, new PreferanseFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+        openPreferencesButton.setOnClickListener(this::openPreferences);
 
         // Opprett SmsHandler
         SmsHandler smsHandler = new SmsHandler(this);
@@ -104,6 +95,45 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             datePickerDialog.show();
         });
         visAlle();
+    }
+    private void openPreferences(View v) {
+        // Skjul RecyclerView, knapper, og TextView
+        recyclerView.setVisibility(View.GONE);
+        findViewById(R.id.navnEditText).setVisibility(View.GONE);
+        findViewById(R.id.telefonEditText).setVisibility(View.GONE);
+        findViewById(R.id.bursdagEditText).setVisibility(View.GONE);
+        findViewById(R.id.leggtil).setVisibility(View.GONE);
+        findViewById(R.id.slett).setVisibility(View.GONE);
+        findViewById(R.id.open_preferences_button).setVisibility(View.GONE); // Skjul preferanser knappen
+        findViewById(R.id.visview).setVisibility(View.GONE); // Skjul TextView
+
+        // Åpne preferansefragmentet
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.settings_container, new PreferanseFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Sjekk om det er fragmenter i tilbake-stakken
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            // Fjern det øverste fragmentet
+            getSupportFragmentManager().popBackStack();
+
+            // Vis RecyclerView, knapper, og TextView igjen
+            recyclerView.setVisibility(View.VISIBLE);
+            findViewById(R.id.navnEditText).setVisibility(View.VISIBLE);
+            findViewById(R.id.telefonEditText).setVisibility(View.VISIBLE);
+            findViewById(R.id.bursdagEditText).setVisibility(View.VISIBLE);
+            findViewById(R.id.leggtil).setVisibility(View.VISIBLE);
+            findViewById(R.id.slett).setVisibility(View.VISIBLE);
+            findViewById(R.id.open_preferences_button).setVisibility(View.VISIBLE); // Vis preferanser knappen
+            findViewById(R.id.visview).setVisibility(View.VISIBLE); // Vis TextView
+        } else {
+            // Hvis ingen fragmenter er i stakken, kjør standard atferd
+            super.onBackPressed();
+        }
     }
 
     @Override
