@@ -5,10 +5,12 @@
 
     <!-- Slå SMS-tjenesten av/på -->
     <SwitchPreferenceCompat
+        android:id="@+id/sms_service_switch"
         android:key="sms_service_enabled"
         android:title="SMS-tjeneste"
         android:summary="Slå av/på SMS-tjenesten"
-        android:defaultValue="false" />
+        android:defaultValue="false"
+        />
 
     <!-- Velg tidspunkt for når SMS skal sendes -->
     <Preference

@@ -1,14 +1,17 @@
 package com.example.oblig2s375045s375063;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.database.Cursor;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -95,6 +98,12 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             datePickerDialog.show();
         });
         visAlle();
+
+        BroadcastReceiver myBroadcastReceiver = new MinBroadcastReceiver();
+        IntentFilter filter;
+        filter = new IntentFilter("com.example.service.MITTSIGNAL");
+        filter.addAction("com.example.service.MITTSIGNAL");
+        this.registerReceiver(myBroadcastReceiver,filter, Context.RECEIVER_EXPORTED);
     }
     private void openPreferences(View v) {
         // Skjul RecyclerView, knapper, og TextView
@@ -190,5 +199,23 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             tekst += " " + venn.getId() + ": " + venn.getNavn() + ", " + venn.getTelefon() + ", " + venn.getBursdag() + "\n";
         }
         textView.setText(tekst);
+    }
+
+    //Service funksjoner
+
+    public void stoppService(View v) {
+        Intent i = new Intent(this, MinSendService.class);
+        stopService(i);
+    }
+
+    public void stoppPeriodisk(View v) {
+        Intent i = new Intent(this, MinSendService.class);
+        PendingIntent pintent = PendingIntent.getService(this, 0, i,
+                PendingIntent.FLAG_IMMUTABLE
+        ); AlarmManager alarm =
+                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (alarm != null) {
+            alarm.cancel(pintent);
+        }
     }
 }

@@ -29,6 +29,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".MinSendService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".MinPeriodisk"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver android:name=".MinBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.MITTSIGNAL" />
+            </intent-filter>
+        </receiver>
 </application>
 
 </manifest>
