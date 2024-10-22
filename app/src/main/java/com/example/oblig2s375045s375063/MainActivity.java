@@ -170,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             navnEditText.setText("");
             telefonEditText.setText("");
             bursdagEditText.setText("");
+
+            visAlle();
         }
     }
 
