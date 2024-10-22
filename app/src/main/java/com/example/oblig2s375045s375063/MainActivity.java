@@ -50,12 +50,6 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         // Sett OnClickListener for knappen
         openPreferencesButton.setOnClickListener(this::openPreferences);
 
-        // Opprett SmsHandler
-        SmsHandler smsHandler = new SmsHandler(this);
-
-        // Eksempel på å sende en SMS ved oppstart
-        smsHandler.sendSms("1234567890", "Gratulerer med dagen");
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right,
