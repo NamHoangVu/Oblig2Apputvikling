@@ -27,7 +27,6 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements VennAdapter.OnVennClickListener {
-
     private SmsHandler smsHandler;
 
     private RecyclerView recyclerView;

@@ -8,6 +8,7 @@ import androidx.preference.Preference;
 import androidx.preference.EditTextPreference;
 import androidx.preference.SwitchPreferenceCompat;
 import android.app.TimePickerDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class PreferanseFragment extends PreferenceFragmentCompat {
                 boolean isChecked = (Boolean) newValue;
 
                 // Lag en intent for å sende til BroadcastReceiver
-                Intent intent = new Intent("com.example.MITTSIGNAL");
+                Intent intent = new Intent("com.example.service.MITTSIGNAL");
                 intent.putExtra("sms_service_enabled", isChecked);
 
                 // Send broadcast
