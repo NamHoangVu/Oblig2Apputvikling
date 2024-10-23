@@ -26,6 +26,8 @@ public class MinSendService extends Service {
 
         // Initialiser SMS-handleren
         smsHandler = new SmsHandler(this);
+
+        Log.d("MinSendService", "Service opprettet og databasen er åpnet.");
     }
 
     @Nullable
@@ -36,23 +38,33 @@ public class MinSendService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("Minservice", "I min service");
+        Log.d("MinSendService", "Service startet.");
 
         // Hent dagens dato
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM", Locale.getDefault());
         String dagensDato = dateFormat.format(calendar.getTime());
 
+        Log.d("MinSendService", "Dagens dato: " + dagensDato);
+
         // Sjekk hvem som har bursdag i dag
         List<Venn> vennerMedBursdag = dataKilde.hentVennerMedBursdag(dagensDato);
+
+        Log.d("MinSendService", "Antall venner med bursdag i dag: " + vennerMedBursdag.size());
 
         // Send gratulasjons-SMS til dem som har bursdag
         for (Venn venn : vennerMedBursdag) {
             String telefonnummer = venn.getTelefon();
             String navn = venn.getNavn();
             String melding = "Gratulerer med dagen, " + navn + "!";
+
+            // Logg informasjon før SMS sendes
+            Log.d("MinSendService", "Sender melding til: " + navn + " på telefonnummer: " + telefonnummer);
+
             smsHandler.sendSms(telefonnummer, melding);
-            Log.d("Minservice", "Sendt melding til " + navn);
+
+            // Bekreft at melding er sendt
+            Log.d("MinSendService", "Melding sendt til: " + navn);
         }
 
         return START_STICKY;
@@ -62,6 +74,6 @@ public class MinSendService extends Service {
     public void onDestroy() {
         super.onDestroy();
         dataKilde.close();
-        Log.d("Minservice", "Service fjernet");
+        Log.d("MinSendService", "Service stoppet og databasen lukket.");
     }
 }
