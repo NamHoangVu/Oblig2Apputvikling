@@ -1,18 +1,13 @@
 package com.example.oblig2s375045s375063;
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.Preference;
-import androidx.preference.EditTextPreference;
 import androidx.preference.SwitchPreferenceCompat;
 import android.app.TimePickerDialog;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TimePicker;
 import java.util.Calendar;
 
 public class PreferanseFragment extends PreferenceFragmentCompat {
@@ -20,22 +15,19 @@ public class PreferanseFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
+        // Hent SharedPreferences
+        SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
+
         // Håndter tidspicker for SMS-tid
         Preference timePreference = findPreference("sms_time");
         if (timePreference != null) {
             String defaultTime = "08:00";  // Standardverdi
-            timePreference.setSummary(getPreferenceManager().getSharedPreferences().getString("sms_time", defaultTime));
-        }
-
-        // Håndter standard SMS-melding
-        EditTextPreference messagePreference = findPreference("sms_message");
-        if (messagePreference != null) {
-            messagePreference.setSummary(messagePreference.getText());
+            timePreference.setSummary(sharedPreferences.getString("sms_time", defaultTime));
         }
 
         // Håndter endring av tid
         timePreference.setOnPreferenceClickListener(preference -> {
-            showTimePickerDialog();
+            showTimePickerDialog(sharedPreferences); // Passer inn sharedPreferences
             return true;
         });
 
@@ -45,18 +37,20 @@ public class PreferanseFragment extends PreferenceFragmentCompat {
             smsServiceSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean isChecked = (Boolean) newValue;
 
-                // Lag en intent for å sende til BroadcastReceiver
-                Intent intent = new Intent("com.example.service.MITTSIGNAL");
-                intent.putExtra("sms_service_enabled", isChecked);
+                // Logg tilstanden til bryteren
+                Log.d("PreferanseFragment", "SMS-tjeneste er " + (isChecked ? "aktivert" : "deaktivert"));
 
-                // Send broadcast
+                // Send broadcast for å oppdatere MinBroadcastReceiver
+                Intent intent = new Intent(getContext(), MinBroadcastReceiver.class);
+                intent.putExtra("sms_service_enabled", isChecked);
                 getContext().sendBroadcast(intent);
 
                 return true;  // Returner true for å lagre endringen
             });
         }
     }
-    private void showTimePickerDialog() {
+
+    private void showTimePickerDialog(SharedPreferences sharedPreferences) {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
@@ -72,12 +66,18 @@ public class PreferanseFragment extends PreferenceFragmentCompat {
                         timePreference.setSummary(selectedTime);
 
                         // Lagre den valgte tiden i SharedPreferences
-                        getPreferenceManager().getSharedPreferences().edit()
+                        sharedPreferences.edit()
                                 .putString("sms_time", selectedTime)
                                 .apply();
+
+                        // Logg for å bekrefte at tiden blir lagret
+                        Log.d("PreferanseFragment", "Ny tid lagret i SharedPreferences: " + selectedTime);
+
+                        // Start MinPeriodisk på nytt for å oppdatere alarmen
+                        Intent intent = new Intent(getContext(), MinPeriodisk.class);
+                        getContext().startService(intent);
                     }
                 }, hour, minute, true);
         timePickerDialog.show();
     }
 }
-
