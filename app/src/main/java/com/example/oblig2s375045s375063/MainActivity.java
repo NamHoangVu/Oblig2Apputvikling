@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         telefonEditText = findViewById(R.id.telefonEditText);
         bursdagEditText = findViewById(R.id.bursdagEditText);
         slettVennEditText = findViewById(R.id.slettVennEditText);
+
         // tekstView brukes senere
         textView = findViewById(R.id.visview);
 
@@ -123,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         findViewById(R.id.slett).setVisibility(View.GONE);
         findViewById(R.id.open_preferences_button).setVisibility(View.GONE); // Skjul preferanser knappen
         findViewById(R.id.visview).setVisibility(View.GONE); // Skjul TextView
+        findViewById(R.id.slettVennEditText).setVisibility(View.GONE);
+        findViewById(R.id.endreVennKnapp).setVisibility(View.GONE);
 
         // Åpne preferansefragmentet
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -147,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             findViewById(R.id.slett).setVisibility(View.VISIBLE);
             findViewById(R.id.open_preferences_button).setVisibility(View.VISIBLE); // Vis preferanser knappen
             findViewById(R.id.visview).setVisibility(View.VISIBLE); // Vis TextView
+            findViewById(R.id.slettVennEditText).setVisibility(View.VISIBLE);
+            findViewById(R.id.endreVennKnapp).setVisibility(View.VISIBLE);
         } else {
             // Hvis ingen fragmenter er i stakken, kjør standard atferd
             super.onBackPressed();
