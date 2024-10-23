@@ -22,6 +22,8 @@ public class MinPeriodisk extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("MinPeriodisk", "MinPeriodisk har startet.");
+
         // Hent SharedPreferences med standardnavn
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.oblig2s375045s375063_preferences", MODE_PRIVATE);
 
@@ -57,17 +59,19 @@ public class MinPeriodisk extends Service {
                 Intent i = new Intent(this, MinSendService.class);
                 PendingIntent pintent = PendingIntent.getService(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                Log.d("MinPeriodisk", "Alarm satt til: " + cal.getTime());
 
                 // Fjern eksisterende alarm hvis det finnes, før vi setter opp en ny
                 if (alarm != null) {
                     alarm.cancel(pintent);
+                    alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pintent);
+                    Log.d("MinPeriodisk", "Alarm opprettet: " + cal.getTime());
+
+                    // Start MinSendService når alarmen går av
+                    Log.d("MinPeriodisk", "MinSendService vil bli startet av alarmen.");
+                } else {
+                    Log.e("MinPeriodisk", "Kunne ikke hente AlarmManager.");
                 }
 
-                // Sett opp alarmen
-                if (alarm != null) {
-                    alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pintent);
-                }
             } catch (NumberFormatException e) {
                 Log.e("MinPeriodisk", "Feil ved parsing av tid: " + e.getMessage());
             }

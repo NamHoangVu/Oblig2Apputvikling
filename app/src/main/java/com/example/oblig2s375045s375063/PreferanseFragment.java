@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.Preference;
-import androidx.preference.EditTextPreference;
 import androidx.preference.SwitchPreferenceCompat;
 import android.app.TimePickerDialog;
 import android.util.Log;
@@ -38,16 +37,13 @@ public class PreferanseFragment extends PreferenceFragmentCompat {
             smsServiceSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean isChecked = (Boolean) newValue;
 
-                // Lagre tilstanden til tjenesten
-                sharedPreferences.edit().putBoolean("sms_service_enabled", isChecked).apply();
+                // Logg tilstanden til bryteren
+                Log.d("PreferanseFragment", "SMS-tjeneste er " + (isChecked ? "aktivert" : "deaktivert"));
 
-                // Send intent for å starte/stopp MinPeriodisk
-                Intent intent = new Intent(getContext(), MinPeriodisk.class);
-                if (isChecked) {
-                    getContext().startService(intent);
-                } else {
-                    getContext().stopService(intent);
-                }
+                // Send broadcast for å oppdatere MinBroadcastReceiver
+                Intent intent = new Intent(getContext(), MinBroadcastReceiver.class);
+                intent.putExtra("sms_service_enabled", isChecked);
+                getContext().sendBroadcast(intent);
 
                 return true;  // Returner true for å lagre endringen
             });
