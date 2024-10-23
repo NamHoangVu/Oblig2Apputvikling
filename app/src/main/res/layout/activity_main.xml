@@ -81,6 +81,20 @@
 
         <!-- Knapp for å slette data -->
         <Button
+            android:id="@+id/endreVennKnapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Endre venn" />
+
+        <!-- Nytt EditText-felt for å slette venn -->
+        <EditText
+            android:id="@+id/slettVennEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Skriv inn venns ID for sletting"/>
+
+        <!-- Knapp for å slette data -->
+        <Button
             android:id="@+id/slett"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

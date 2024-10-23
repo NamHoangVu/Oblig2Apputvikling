@@ -29,6 +29,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".EditVenn"
+            android:exported="true"
+            android:parentActivityName=".MainActivity">
+        </activity>
+
         <service
             android:name=".MinSendService"
             android:enabled="true"

@@ -1,8 +1,6 @@
 package com.example.oblig2s375045s375063;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,11 +31,9 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
     private RecyclerView recyclerView;
     private VennAdapter vennAdapter;
-    private VennAdapter.OnVennClickListener listen;
 
-    private List<Venn> venner;
     private VennerDataKilde dataKilde;
-    private EditText vennEditText, navnEditText, telefonEditText, bursdagEditText;
+    private EditText slettVennEditText, navnEditText, telefonEditText, bursdagEditText;
     private TextView textView;
 
     @Override
@@ -45,6 +43,15 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         setContentView(R.layout.activity_main);
 
         Button openPreferencesButton = findViewById(R.id.open_preferences_button);
+        Button endreVennKnapp = findViewById(R.id.endreVennKnapp);
+
+        // Onclick for endre venn knapp
+        endreVennKnapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nyAktivitet(EditVenn.class);
+            }
+        });
 
         // Sett OnClickListener for knappen
         openPreferencesButton.setOnClickListener(this::openPreferences);
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         navnEditText = findViewById(R.id.navnEditText);
         telefonEditText = findViewById(R.id.telefonEditText);
         bursdagEditText = findViewById(R.id.bursdagEditText);
+        slettVennEditText = findViewById(R.id.slettVennEditText);
         // tekstView brukes senere
         textView = findViewById(R.id.visview);
 
@@ -98,6 +106,13 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         filter.addAction("com.example.service.MITTSIGNAL");
         this.registerReceiver(myBroadcastReceiver,filter, Context.RECEIVER_EXPORTED);
     }
+
+    // Metode for å starte en ny aktivitet
+    private void nyAktivitet(Class k){
+        Intent i = new Intent(this, k);
+        startActivity(i); // Starter aktiviteten
+    }
+
     private void openPreferences(View v) {
         // Skjul RecyclerView, knapper, og TextView
         recyclerView.setVisibility(View.GONE);
@@ -159,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         String telefon = telefonEditText.getText().toString();
         String bursdag = bursdagEditText.getText().toString();
         if (!navn.isEmpty() && !telefon.isEmpty() && !bursdag.isEmpty()) {
-            Venn venn = dataKilde.leggTilVenn(navn, telefon, bursdag);
+            dataKilde.leggTilVenn(navn, telefon, bursdag);
             navnEditText.setText("");
             telefonEditText.setText("");
             bursdagEditText.setText("");
@@ -172,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     protected void onResume() {
         dataKilde.open();
         super.onResume();
+        visAlle();
     }
 
     @Override
@@ -182,8 +198,12 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
     // Slett venn-funksjon
     public void slett(View v) {
-        long vennId = Long.parseLong(String.valueOf(vennEditText.getText()));
+        long vennId = Long.parseLong(String.valueOf(slettVennEditText.getText()));
         dataKilde.slettVenn(vennId);
+
+        slettVennEditText.setText("");
+
+        visAlle();
     }
 
     // Vis alle venner-funksjon
@@ -194,23 +214,5 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             tekst += " " + venn.getId() + ": " + venn.getNavn() + ", " + venn.getTelefon() + ", " + venn.getBursdag() + "\n";
         }
         textView.setText(tekst);
-    }
-
-    //Service funksjoner
-
-    public void stoppService(View v) {
-        Intent i = new Intent(this, MinSendService.class);
-        stopService(i);
-    }
-
-    public void stoppPeriodisk(View v) {
-        Intent i = new Intent(this, MinSendService.class);
-        PendingIntent pintent = PendingIntent.getService(this, 0, i,
-                PendingIntent.FLAG_IMMUTABLE
-        ); AlarmManager alarm =
-                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        if (alarm != null) {
-            alarm.cancel(pintent);
-        }
     }
 }

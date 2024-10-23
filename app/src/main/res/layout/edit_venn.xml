@@ -1,33 +1,48 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".EditVenn">
+
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/tekstNavn"
+        android:id="@+id/vennIDEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ID"/>
+
+    <EditText
+        android:id="@+id/navnEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Navn"
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/tekstTelefon"
+        android:id="@+id/telefonEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Telefon"
         android:inputType="phone" />
 
     <EditText
-        android:id="@+id/tekstBursdag"
+        android:id="@+id/bursdagEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Bursdag (YYYY-MM-DD)"
         android:inputType="date" />
 
     <Button
-        android:id="@+id/knappLagre"
+        android:id="@+id/endreVennKnapp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Lagre" />
 </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

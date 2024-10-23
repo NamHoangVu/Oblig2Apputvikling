@@ -52,6 +52,22 @@ public class VennerDataKilde {
         database.delete(DatabaseHjelper.TABELL_VENNER, DatabaseHjelper.KOLONNE_ID + "=?", new String[]{Long.toString(vennId)});
     }
 
+    public void endreVenn(String vennId, String navn, String telefon, String bursdag) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHjelper.KOLONNE_NAVN, navn);
+        values.put(DatabaseHjelper.KOLONNE_TELEFON, telefon);
+        values.put(DatabaseHjelper.KOLONNE_BURSDAG, bursdag);
+
+        // Oppdater posten som matcher vennId
+        String whereClause = DatabaseHjelper.KOLONNE_ID + " = ?";
+        String[] whereArgs = { vennId };
+
+        database.update(DatabaseHjelper.TABELL_VENNER, values, whereClause, whereArgs);
+
+        // Lukk databasen etter endt operasjon
+        database.close();
+    }
+
     public List<Venn> finnAlleVenner() {
         List<Venn> venner = new ArrayList<>();
         Cursor cursor = database.query(DatabaseHjelper.TABELL_VENNER, null, null, null, null, null, null);
