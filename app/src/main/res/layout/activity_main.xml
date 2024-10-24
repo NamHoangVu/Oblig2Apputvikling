@@ -64,7 +64,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone" /> <!-- Initially hidden -->
+        android:visibility="gone" />
 
     <!-- RecyclerView to display the list of friends -->
     <androidx.recyclerview.widget.RecyclerView

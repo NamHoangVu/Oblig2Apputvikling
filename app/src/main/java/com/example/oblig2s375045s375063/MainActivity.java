@@ -127,6 +127,9 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         findViewById(R.id.leggtil).setVisibility(View.GONE);
         findViewById(R.id.open_preferences_button).setVisibility(View.GONE); // Skjul preferanser knappen
 
+        // Gjør preferansefragmentet synlig
+        findViewById(R.id.settings_container).setVisibility(View.VISIBLE);
+
         // Åpne preferansefragmentet
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.settings_container, new PreferanseFragment());
