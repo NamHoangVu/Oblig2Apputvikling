@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,8 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
     private RecyclerView recyclerView;
     private VennAdapter vennAdapter;
-    private List<Venn> vennList;
+
     private VennerDataKilde dataKilde;
     private EditText slettVennEditText, navnEditText, telefonEditText, bursdagEditText;
 
@@ -49,42 +46,30 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         Button endreVennKnapp = findViewById(R.id.endreVennKnapp);
 
         // Onclick for endre venn knapp
-        endreVennKnapp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nyAktivitet(EditVenn.class);
-            }
-        });
+        endreVennKnapp.setOnClickListener(v -> nyAktivitet(EditVenn.class));
 
-        // Sett OnClickListener for knappen
+        // Sett OnClickListener for preferanseknappen
         openPreferencesButton.setOnClickListener(this::openPreferences);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right,
-                    systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        vennList = dataKilde.finnAlleVenner();
-        vennAdapter = new VennAdapter(vennList, new VennAdapter.OnVennClickListener() {
-            @Override
-            public void onItemClick(Venn venn) {
-                Intent intent = new Intent(MainActivity.this, EditVenn.class);
-                intent.putExtra("vennId", venn.getId());
-                startActivity(intent);
-            }
-        });
+        // Initialiser adapter og liste
+        List<Venn> vennListe = new ArrayList<>();
+        vennAdapter = new VennAdapter(vennListe, this);
         recyclerView.setAdapter(vennAdapter);
 
         // Åpne databasen
         dataKilde = new VennerDataKilde(this);
         dataKilde.open();
 
-        // Finn EditTexts og TextView
+        // Finn EditTexts
         navnEditText = findViewById(R.id.navnEditText);
         telefonEditText = findViewById(R.id.telefonEditText);
         bursdagEditText = findViewById(R.id.bursdagEditText);
@@ -92,54 +77,47 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
         // Set up DatePickerDialog for bursdagEditText
         bursdagEditText.setOnClickListener(v -> {
-            // Få dagens dato som standard
             final Calendar calendar = Calendar.getInstance();
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
 
-            // Åpne DatePickerDialog
             DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
-                        // Oppdater EditText med den valgte datoen
                         bursdagEditText.setText(selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear);
                     }, year, month, day);
             datePickerDialog.show();
         });
 
-        BroadcastReceiver myBroadcastReceiver = new MinBroadcastReceiver();
-        IntentFilter filter;
-        filter = new IntentFilter("com.example.service.MITTSIGNAL");
-        filter.addAction("com.example.service.MITTSIGNAL");
-        this.registerReceiver(myBroadcastReceiver, filter, Context.RECEIVER_EXPORTED);
+        visAlle();
 
+        BroadcastReceiver myBroadcastReceiver = new MinBroadcastReceiver();
+        IntentFilter filter = new IntentFilter("com.example.service.MITTSIGNAL");
+        this.registerReceiver(myBroadcastReceiver, filter, Context.RECEIVER_EXPORTED);
 
         smsHandler = new SmsHandler(this);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            // Be om tillatelse
             smsHandler.sendSms("", "");  // Dette vil initiere tillatelsessjekk
         } else {
-            // Tillatelse allerede gitt, send en test SMS om nødvendig
             Toast.makeText(this, "Tillatelse allerede gitt.", Toast.LENGTH_SHORT).show();
         }
     }
 
     // Metode for å starte en ny aktivitet
-    private void nyAktivitet(Class k) {
+    private void nyAktivitet(Class<?> k) {
         Intent i = new Intent(this, k);
         startActivity(i); // Starter aktiviteten
     }
 
     private void openPreferences(View v) {
-        // Skjul RecyclerView, knapper, og TextView
+        // Skjul RecyclerView og EditTexts
         recyclerView.setVisibility(View.GONE);
-        findViewById(R.id.navnEditText).setVisibility(View.GONE);
-        findViewById(R.id.telefonEditText).setVisibility(View.GONE);
-        findViewById(R.id.bursdagEditText).setVisibility(View.GONE);
+        navnEditText.setVisibility(View.GONE);
+        telefonEditText.setVisibility(View.GONE);
+        bursdagEditText.setVisibility(View.GONE);
         findViewById(R.id.leggtil).setVisibility(View.GONE);
         findViewById(R.id.slett).setVisibility(View.GONE);
-        findViewById(R.id.open_preferences_button).setVisibility(View.GONE); // Skjul preferanser knappen
-        findViewById(R.id.visview).setVisibility(View.GONE); // Skjul TextView
+        findViewById(R.id.open_preferences_button).setVisibility(View.GONE);
         findViewById(R.id.slettVennEditText).setVisibility(View.GONE);
         findViewById(R.id.endreVennKnapp).setVisibility(View.GONE);
 
@@ -152,24 +130,19 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
     @Override
     public void onBackPressed() {
-        // Sjekk om det er fragmenter i tilbake-stakken
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            // Fjern det øverste fragmentet
             getSupportFragmentManager().popBackStack();
-
-            // Vis RecyclerView, knapper, og TextView igjen
+            // Vis RecyclerView og EditTexts igjen
             recyclerView.setVisibility(View.VISIBLE);
-            findViewById(R.id.navnEditText).setVisibility(View.VISIBLE);
-            findViewById(R.id.telefonEditText).setVisibility(View.VISIBLE);
-            findViewById(R.id.bursdagEditText).setVisibility(View.VISIBLE);
+            navnEditText.setVisibility(View.VISIBLE);
+            telefonEditText.setVisibility(View.VISIBLE);
+            bursdagEditText.setVisibility(View.VISIBLE);
             findViewById(R.id.leggtil).setVisibility(View.VISIBLE);
             findViewById(R.id.slett).setVisibility(View.VISIBLE);
-            findViewById(R.id.open_preferences_button).setVisibility(View.VISIBLE); // Vis preferanser knappen
-            findViewById(R.id.visview).setVisibility(View.VISIBLE); // Vis TextView
+            findViewById(R.id.open_preferences_button).setVisibility(View.VISIBLE);
             findViewById(R.id.slettVennEditText).setVisibility(View.VISIBLE);
             findViewById(R.id.endreVennKnapp).setVisibility(View.VISIBLE);
         } else {
-            // Hvis ingen fragmenter er i stakken, kjør standard atferd
             super.onBackPressed();
         }
     }
@@ -177,13 +150,13 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Send SMS hvis tillatelse er gitt
         smsHandler.onRequestPermissionsResult(requestCode, grantResults);
     }
 
     @Override
     public void onItemClick(Venn venn) {
+        // Håndterer når et element i RecyclerView blir klikket
+        // Kan implementeres etter behov
     }
 
     // Legg til venn-funksjon
@@ -193,15 +166,10 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         String bursdag = bursdagEditText.getText().toString();
         if (!navn.isEmpty() && !telefon.isEmpty() && !bursdag.isEmpty()) {
             dataKilde.leggTilVenn(navn, telefon, bursdag);
-
-            // Oppdater vennelisten
-            vennList.clear();
-            vennList.addAll(dataKilde.finnAlleVenner());
-            vennAdapter.notifyDataSetChanged();
-
             navnEditText.setText("");
             telefonEditText.setText("");
             bursdagEditText.setText("");
+            visAlle();
         }
     }
 
@@ -209,10 +177,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     protected void onResume() {
         dataKilde.open();
         super.onResume();
-
-        vennList.clear();
-        vennList.addAll(dataKilde.finnAlleVenner());
-        vennAdapter.notifyDataSetChanged();
+        visAlle();
     }
 
     @Override
@@ -223,14 +188,15 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
     // Slett venn-funksjon
     public void slett(View v) {
-        long vennId = Long.parseLong(String.valueOf(slettVennEditText.getText()));
+        long vennId = Long.parseLong(slettVennEditText.getText().toString());
         dataKilde.slettVenn(vennId);
-
-        vennList.clear();
-        vennList.addAll(dataKilde.finnAlleVenner());
-        vennAdapter.notifyDataSetChanged();
-
         slettVennEditText.setText("");
+        visAlle();
+    }
+
+    // Vis alle venner-funksjon
+    public void visAlle() {
+        List<Venn> venner = dataKilde.finnAlleVenner();
+        vennAdapter.updateVennListe(venner); // Oppdaterer adapteren med ny liste
     }
 }
-
