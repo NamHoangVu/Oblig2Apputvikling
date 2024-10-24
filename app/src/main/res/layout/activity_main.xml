@@ -8,99 +8,102 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- RecyclerView to display the list of friends -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/visview"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- TextView for displaying information -->
+    <TextView
+        android:id="@+id/visview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Din venneliste" />
+
+    <!-- EditText for Name -->
+    <EditText
+        android:id="@+id/navnEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Skriv inn navn"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/visview" />
+
+    <!-- EditText for Phone -->
+    <EditText
+        android:id="@+id/telefonEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Skriv inn telefonnummer"
+        android:inputType="phone"
+        app:layout_constraintTop_toBottomOf="@+id/navnEditText" />
+
+    <!-- EditText for Birthday -->
+    <EditText
+        android:id="@+id/bursdagEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Velg bursdag"
+        android:focusable="false"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@+id/telefonEditText" />
+
+    <!-- Button to open preferences -->
+    <Button
+        android:id="@+id/open_preferences_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preferanser"
+        app:layout_constraintTop_toBottomOf="@+id/bursdagEditText" />
+
+    <!-- Button to add friend -->
+    <Button
+        android:id="@+id/leggtil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="leggtil"
+        android:text="Legg til"
+        app:layout_constraintTop_toBottomOf="@+id/open_preferences_button" />
+
+    <!-- Button to change friend -->
+    <Button
+        android:id="@+id/endreVennKnapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Endre venn"
+        app:layout_constraintTop_toBottomOf="@+id/leggtil" />
+
+    <!-- EditText for deleting friend -->
+    <EditText
+        android:id="@+id/slettVennEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Skriv inn venns ID for sletting"
+        app:layout_constraintTop_toBottomOf="@+id/endreVennKnapp" />
+
+    <!-- Button to delete friend -->
+    <Button
+        android:id="@+id/slett"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="slett"
+        android:text="Slett"
+        app:layout_constraintTop_toBottomOf="@+id/slettVennEditText" />
+
+    <!-- Container for the Preference Fragment -->
     <FrameLayout
         android:id="@+id/settings_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slett"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        tools:context=".MainActivity">
-
-        <!-- TextView for å vise innhold -->
-        <TextView
-            android:id="@+id/visview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <!-- Nytt EditText-felt for Navn -->
-        <EditText
-            android:id="@+id/navnEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Skriv inn navn"
-            android:inputType="textPersonName"/>
-
-        <!-- Nytt EditText-felt for Telefon -->
-        <EditText
-            android:id="@+id/telefonEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Skriv inn telefonnummer"
-            android:inputType="phone"/>
-
-        <!-- Nytt EditText-felt for Bursdag -->
-        <EditText
-            android:id="@+id/bursdagEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Velg bursdag"
-            android:focusable="false"
-            android:clickable="true" />
-
-        <!-- Knapp for å Preferanser -->
-        <Button
-            android:id="@+id/open_preferences_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Preferanser"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-        <!-- Knapp for å legge til data -->
-        <Button
-            android:id="@+id/leggtil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="leggtil"
-            android:text="Legg til" />
-
-        <!-- Knapp for å slette data -->
-        <Button
-            android:id="@+id/endreVennKnapp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Endre venn" />
-
-        <!-- Nytt EditText-felt for å slette venn -->
-        <EditText
-            android:id="@+id/slettVennEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Skriv inn venns ID for sletting"/>
-
-        <!-- Knapp for å slette data -->
-        <Button
-            android:id="@+id/slett"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="slett"
-            android:text="Slett" />
-
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone" /> <!-- Initially hidden -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

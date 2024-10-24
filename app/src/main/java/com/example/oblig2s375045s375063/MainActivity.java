@@ -35,10 +35,9 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
     private RecyclerView recyclerView;
     private VennAdapter vennAdapter;
-
+    private List<Venn> vennList;
     private VennerDataKilde dataKilde;
     private EditText slettVennEditText, navnEditText, telefonEditText, bursdagEditText;
-    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +69,15 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Venn> VennList = new ArrayList<>();
-        vennAdapter = new VennAdapter(VennList, this);
+        vennList = dataKilde.finnAlleVenner();
+        vennAdapter = new VennAdapter(vennList, new VennAdapter.OnVennClickListener() {
+            @Override
+            public void onItemClick(Venn venn) {
+                Intent intent = new Intent(MainActivity.this, EditVenn.class);
+                intent.putExtra("vennId", venn.getId());
+                startActivity(intent);
+            }
+        });
         recyclerView.setAdapter(vennAdapter);
 
         // Åpne databasen
@@ -83,9 +89,6 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         telefonEditText = findViewById(R.id.telefonEditText);
         bursdagEditText = findViewById(R.id.bursdagEditText);
         slettVennEditText = findViewById(R.id.slettVennEditText);
-
-        // tekstView brukes senere
-        textView = findViewById(R.id.visview);
 
         // Set up DatePickerDialog for bursdagEditText
         bursdagEditText.setOnClickListener(v -> {
@@ -103,13 +106,12 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
                     }, year, month, day);
             datePickerDialog.show();
         });
-        visAlle();
 
         BroadcastReceiver myBroadcastReceiver = new MinBroadcastReceiver();
         IntentFilter filter;
         filter = new IntentFilter("com.example.service.MITTSIGNAL");
         filter.addAction("com.example.service.MITTSIGNAL");
-        this.registerReceiver(myBroadcastReceiver,filter, Context.RECEIVER_EXPORTED);
+        this.registerReceiver(myBroadcastReceiver, filter, Context.RECEIVER_EXPORTED);
 
 
         smsHandler = new SmsHandler(this);
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     }
 
     // Metode for å starte en ny aktivitet
-    private void nyAktivitet(Class k){
+    private void nyAktivitet(Class k) {
         Intent i = new Intent(this, k);
         startActivity(i); // Starter aktiviteten
     }
@@ -184,18 +186,22 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     public void onItemClick(Venn venn) {
     }
 
-// Legg til venn-funksjon
+    // Legg til venn-funksjon
     public void leggtil(View v) {
         String navn = navnEditText.getText().toString();
         String telefon = telefonEditText.getText().toString();
         String bursdag = bursdagEditText.getText().toString();
         if (!navn.isEmpty() && !telefon.isEmpty() && !bursdag.isEmpty()) {
             dataKilde.leggTilVenn(navn, telefon, bursdag);
+
+            // Oppdater vennelisten
+            vennList.clear();
+            vennList.addAll(dataKilde.finnAlleVenner());
+            vennAdapter.notifyDataSetChanged();
+
             navnEditText.setText("");
             telefonEditText.setText("");
             bursdagEditText.setText("");
-
-            visAlle();
         }
     }
 
@@ -203,7 +209,10 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     protected void onResume() {
         dataKilde.open();
         super.onResume();
-        visAlle();
+
+        vennList.clear();
+        vennList.addAll(dataKilde.finnAlleVenner());
+        vennAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -217,18 +226,11 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         long vennId = Long.parseLong(String.valueOf(slettVennEditText.getText()));
         dataKilde.slettVenn(vennId);
 
+        vennList.clear();
+        vennList.addAll(dataKilde.finnAlleVenner());
+        vennAdapter.notifyDataSetChanged();
+
         slettVennEditText.setText("");
-
-        visAlle();
-    }
-
-    // Vis alle venner-funksjon
-    public void visAlle() {
-        String tekst = "";
-        List<Venn> venner = dataKilde.finnAlleVenner();
-        for (Venn venn : venner) {
-            tekst += " " + venn.getId() + ": " + venn.getNavn() + ", " + venn.getTelefon() + ", " + venn.getBursdag() + "\n";
-        }
-        textView.setText(tekst);
     }
 }
+

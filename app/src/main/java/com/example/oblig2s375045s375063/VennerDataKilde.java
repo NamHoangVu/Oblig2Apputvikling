@@ -64,8 +64,6 @@ public class VennerDataKilde {
 
         database.update(DatabaseHjelper.TABELL_VENNER, values, whereClause, whereArgs);
 
-        // Lukk databasen etter endt operasjon
-        database.close();
     }
 
     public List<Venn> finnAlleVenner() {

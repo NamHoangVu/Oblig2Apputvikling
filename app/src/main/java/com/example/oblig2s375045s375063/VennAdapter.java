@@ -1,5 +1,6 @@
 package com.example.oblig2s375045s375063;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,51 +12,62 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class VennAdapter extends RecyclerView.Adapter<VennAdapter.ViewHolder> {
-    private List<Venn> VennList;
+    private List<Venn> vennList;
     private OnVennClickListener listener; // Define the listener interface
+
     public interface OnVennClickListener {
         void onItemClick(Venn venn);
     }
-    public VennAdapter(List<Venn> itemList, OnVennClickListener listener) {
-        this.VennList = itemList;
+
+    public VennAdapter(List<Venn> vennList, OnVennClickListener listener) {
+        this.vennList = vennList;
         this.listener = listener;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.venn_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_venn, parent, false);
         return new ViewHolder(view);
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Venn venn = VennList.get(position);
-        holder.navn.setText(venn.getNavn());
-        holder.telefon.setText(venn.getTelefon());
-        holder.bursdag.setText(venn.getBursdag());
+        Venn venn = vennList.get(position);
+        holder.bind(venn, listener);
     }
     @Override
     public int getItemCount() {
-        return VennList.size();
+        return vennList.size();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView navn;
-        TextView telefon;
-        TextView bursdag;
-        public ViewHolder(View itemView) {
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView navnTextView, telefonTextView, bursdagTextView;
+
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            navn = itemView.findViewById(R.id.navn);
-            telefon = itemView.findViewById(R.id.telefon);
-            bursdag = itemView.findViewById(R.id.bursdag);
+            navnTextView = itemView.findViewById(R.id.navnTextView);
+            telefonTextView = itemView.findViewById(R.id.telefonTextView);
+            bursdagTextView = itemView.findViewById(R.id.bursdagTextView);
+        }
+
+        public void bind(final Venn venn, final OnVennClickListener listener) {
+            navnTextView.setText(venn.getNavn());
+            telefonTextView.setText(venn.getTelefon());
+            bursdagTextView.setText(venn.getBursdag());
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(VennList.get(position)); // Trigger the onItemClick event
+                        Intent intent = new Intent(view.getContext(), EditVenn.class);
+                        intent.putExtra("vennId", venn.getId());
+                        intent.putExtra("navn", venn.getNavn());
+                        intent.putExtra("telefon", venn.getTelefon());
+                        intent.putExtra("bursdag", venn.getBursdag());
+                        view.getContext().startActivity(intent);
                     }
-                }
             });
         }
+
     }
 }
 

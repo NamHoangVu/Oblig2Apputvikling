@@ -11,31 +11,43 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/vennIDEditText"
+    <TextView
+        android:id="@+id/navnTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="ID"/>
+        />
 
     <EditText
         android:id="@+id/navnEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Navn"
+        android:hint="Nytt navn"
         android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/telefonTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
     <EditText
         android:id="@+id/telefonEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Telefon"
+        android:hint="Nytt telefonnummer"
         android:inputType="phone" />
+
+    <TextView
+        android:id="@+id/bursdagTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
     <EditText
         android:id="@+id/bursdagEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Bursdag (YYYY-MM-DD)"
+        android:hint="Ny dato for bursdag"
         android:inputType="date" />
 
     <Button
