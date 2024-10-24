@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     private VennAdapter vennAdapter;
     private List<Venn> vennList;
     private VennerDataKilde dataKilde;
-    private EditText slettVennEditText, navnEditText, telefonEditText, bursdagEditText;
+    private EditText navnEditText, telefonEditText, bursdagEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         navnEditText = findViewById(R.id.navnEditText);
         telefonEditText = findViewById(R.id.telefonEditText);
         bursdagEditText = findViewById(R.id.bursdagEditText);
-        slettVennEditText = findViewById(R.id.slettVennEditText);
 
         // Set up DatePickerDialog for bursdagEditText
         bursdagEditText.setOnClickListener(v -> {
@@ -126,9 +125,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         findViewById(R.id.telefonEditText).setVisibility(View.GONE);
         findViewById(R.id.bursdagEditText).setVisibility(View.GONE);
         findViewById(R.id.leggtil).setVisibility(View.GONE);
-        findViewById(R.id.slett).setVisibility(View.GONE);
         findViewById(R.id.open_preferences_button).setVisibility(View.GONE); // Skjul preferanser knappen
-        findViewById(R.id.slettVennEditText).setVisibility(View.GONE);
 
         // Åpne preferansefragmentet
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -150,9 +147,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             findViewById(R.id.telefonEditText).setVisibility(View.VISIBLE);
             findViewById(R.id.bursdagEditText).setVisibility(View.VISIBLE);
             findViewById(R.id.leggtil).setVisibility(View.VISIBLE);
-            findViewById(R.id.slett).setVisibility(View.VISIBLE);
             findViewById(R.id.open_preferences_button).setVisibility(View.VISIBLE); // Vis preferanser knappen
-            findViewById(R.id.slettVennEditText).setVisibility(View.VISIBLE);
         } else {
             // Hvis ingen fragmenter er i stakken, kjør standard atferd
             super.onBackPressed();
@@ -204,18 +199,6 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     protected void onPause() {
         dataKilde.close();
         super.onPause();
-    }
-
-    // Slett venn-funksjon
-    public void slett(View v) {
-        long vennId = Long.parseLong(String.valueOf(slettVennEditText.getText()));
-        dataKilde.slettVenn(vennId);
-
-        vennList.clear();
-        vennList.addAll(dataKilde.finnAlleVenner());
-        vennAdapter.notifyDataSetChanged();
-
-        slettVennEditText.setText("");
     }
 }
 

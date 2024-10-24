@@ -54,7 +54,16 @@
         android:id="@+id/endreVennKnapp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lagre" />
+        android:text="Lagre endringer" />
+
+    <!-- Button to delete friend -->
+    <Button
+        android:id="@+id/slettKnapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="slett"
+        android:text="Slett venn"
+        app:layout_constraintTop_toBottomOf="@+id/endreVennKnapp" />
 </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

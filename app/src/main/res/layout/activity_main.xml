@@ -38,14 +38,6 @@
         android:clickable="true"
         app:layout_constraintTop_toBottomOf="@+id/telefonEditText" />
 
-    <!-- Button to open preferences -->
-    <Button
-        android:id="@+id/open_preferences_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Preferanser"
-        app:layout_constraintTop_toBottomOf="@+id/bursdagEditText" />
-
     <!-- Button to add friend -->
     <Button
         android:id="@+id/leggtil"
@@ -53,31 +45,22 @@
         android:layout_height="wrap_content"
         android:onClick="leggtil"
         android:text="Legg til"
-        app:layout_constraintTop_toBottomOf="@+id/open_preferences_button" />
+        app:layout_constraintTop_toBottomOf="@+id/bursdagEditText" />
 
-    <!-- EditText for deleting friend -->
-    <EditText
-        android:id="@+id/slettVennEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Skriv inn venns ID for sletting"
-        app:layout_constraintTop_toBottomOf="@+id/leggtil" />
-
-    <!-- Button to delete friend -->
+    <!-- Button to open preferences -->
     <Button
-        android:id="@+id/slett"
+        android:id="@+id/open_preferences_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="slett"
-        android:text="Slett"
-        app:layout_constraintTop_toBottomOf="@+id/slettVennEditText" />
+        android:text="Preferanser"
+        app:layout_constraintTop_toBottomOf="@+id/leggtil" />
 
     <!-- Container for the Preference Fragment -->
     <FrameLayout
         android:id="@+id/settings_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/slett"
+        app:layout_constraintTop_toBottomOf="@+id/leggtil"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +71,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/slett"
+        app:layout_constraintTop_toBottomOf="@+id/open_preferences_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

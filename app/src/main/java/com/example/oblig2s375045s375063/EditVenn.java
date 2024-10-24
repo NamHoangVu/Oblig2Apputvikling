@@ -20,6 +20,7 @@ public class EditVenn extends AppCompatActivity {
 
     private EditText navnEditText, telefonEditText, bursdagEditText;
     private TextView navnTextView, telefonTextView, bursdagTextView;
+    private long vennId;
 
     Button endreVennKnapp;
 
@@ -38,7 +39,7 @@ public class EditVenn extends AppCompatActivity {
         bursdagTextView = findViewById(R.id.bursdagTextView);
 
         Intent intent = getIntent();
-        long vennId = intent.getLongExtra("vennId", -1);
+        vennId = intent.getLongExtra("vennId", -1);
         String navn = intent.getStringExtra("navn");
         String telefon = intent.getStringExtra("telefon");
         String bursdag = intent.getStringExtra("bursdag");
@@ -96,10 +97,38 @@ public class EditVenn extends AppCompatActivity {
                     }, year, month, day);
             datePickerDialog.show();
         });
+
+        Button slettKnapp = findViewById(R.id.slettKnapp); // Sørg for at knappen eksisterer i layout
+        slettKnapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                slett(v);
+            }
+
+        });
     }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        dataKilde.close();
-    }
+
+        // Slett venn-funksjon
+        public void slett (View v){
+            if (vennId != -1) {
+                dataKilde.slettVenn(vennId);
+
+                Toast.makeText(EditVenn.this, "Venn slettet!", Toast.LENGTH_SHORT).show();
+
+                // Start MainActivity på nytt for å vise den oppdaterte listen
+                Intent intent = new Intent(EditVenn.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Fjern alle aktiviteter på stacken og gå tilbake til MainActivity
+                startActivity(intent);
+
+                // Avslutt EditVenn-aktiviteten slik at brukeren ikke kan gå tilbake hit
+                finish();
+            }
+        }
+
+        @Override
+        public void onDestroy () {
+            super.onDestroy();
+            dataKilde.close();
+        }
+
 }
