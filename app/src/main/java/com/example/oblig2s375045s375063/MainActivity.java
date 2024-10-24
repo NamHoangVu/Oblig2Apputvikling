@@ -176,9 +176,6 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        // Initialiser SmsHandler
-        SmsHandler smsHandler = new SmsHandler(this);
-
         // Send SMS hvis tillatelse er gitt
         smsHandler.onRequestPermissionsResult(requestCode, grantResults);
     }
