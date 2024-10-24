@@ -28,14 +28,7 @@ public class MinPeriodisk extends Service {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.oblig2s375045s375063_preferences", MODE_PRIVATE);
 
         // Hent tidspunktet fra SharedPreferences
-        String time = sharedPreferences.getString("sms_time", null);
-
-        if (time == null) {
-            Log.d("MinPeriodisk", "Ingen tid funnet, bruker fallback: 08:00");
-            time = "08:00"; // Fallback tid
-        } else {
-            Log.d("MinPeriodisk", "Tid fra SharedPreferences: " + time);
-        }
+        String time = sharedPreferences.getString("sms_time", "08:00");
 
         // Split time into hour and minute
         String[] timeParts = time.split(":");

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.Preference;
 import androidx.preference.SwitchPreferenceCompat;
+import androidx.preference.EditTextPreference;  // Legg til denne importen
 import android.app.TimePickerDialog;
 import android.util.Log;
 import java.util.Calendar;
@@ -44,6 +45,28 @@ public class PreferanseFragment extends PreferenceFragmentCompat {
                 Intent intent = new Intent(getContext(), MinBroadcastReceiver.class);
                 intent.putExtra("sms_service_enabled", isChecked);
                 getContext().sendBroadcast(intent);
+
+                return true;  // Returner true for å lagre endringen
+            });
+        }
+
+        // Håndter standard SMS-melding (EditTextPreference)
+        EditTextPreference smsMessagePreference = findPreference("sms_message");
+        if (smsMessagePreference != null) {
+            String defaultMessage = "Hei, dette er en automatisk SMS.";
+            smsMessagePreference.setSummary(sharedPreferences.getString("sms_message", defaultMessage));
+
+            smsMessagePreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                String newMessage = (String) newValue;
+
+                // Oppdater oppsummeringen med den nye meldingen
+                smsMessagePreference.setSummary(newMessage);
+
+                // Lagre den nye meldingen i SharedPreferences
+                sharedPreferences.edit().putString("sms_message", newMessage).apply();
+
+                // Logg for å bekrefte at meldingen er endret
+                Log.d("PreferanseFragment", "Ny SMS-melding lagret: " + newMessage);
 
                 return true;  // Returner true for å lagre endringen
             });
