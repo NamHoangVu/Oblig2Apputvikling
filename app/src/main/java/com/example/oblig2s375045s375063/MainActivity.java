@@ -106,6 +106,10 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         filter = new IntentFilter("com.example.service.MITTSIGNAL");
         filter.addAction("com.example.service.MITTSIGNAL");
         this.registerReceiver(myBroadcastReceiver,filter, Context.RECEIVER_EXPORTED);
+
+        // Sjekk SMS-tillatelse ved oppstart
+        smsHandler = new SmsHandler(this);
+        smsHandler.sendSms("", "");  // Kan brukes til å trigge tillatelsessjekk ved oppstart
     }
 
     // Metode for å starte en ny aktivitet
