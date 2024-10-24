@@ -52,7 +52,7 @@ public class VennerDataKilde {
         database.delete(DatabaseHjelper.TABELL_VENNER, DatabaseHjelper.KOLONNE_ID + "=?", new String[]{Long.toString(vennId)});
     }
 
-    public void endreVenn(String vennId, String navn, String telefon, String bursdag) {
+    public void endreVenn(long vennId, String navn, String telefon, String bursdag) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHjelper.KOLONNE_NAVN, navn);
         values.put(DatabaseHjelper.KOLONNE_TELEFON, telefon);
@@ -60,7 +60,7 @@ public class VennerDataKilde {
 
         // Oppdater posten som matcher vennId
         String whereClause = DatabaseHjelper.KOLONNE_ID + " = ?";
-        String[] whereArgs = { vennId };
+        String[] whereArgs = { String.valueOf(vennId) };
 
         database.update(DatabaseHjelper.TABELL_VENNER, values, whereClause, whereArgs);
 

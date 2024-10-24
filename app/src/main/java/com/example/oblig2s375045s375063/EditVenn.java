@@ -38,7 +38,7 @@ public class EditVenn extends AppCompatActivity {
         bursdagTextView = findViewById(R.id.bursdagTextView);
 
         Intent intent = getIntent();
-        String vennId = intent.getStringExtra("vennId");
+        long vennId = intent.getLongExtra("vennId", -1);
         String navn = intent.getStringExtra("navn");
         String telefon = intent.getStringExtra("telefon");
         String bursdag = intent.getStringExtra("bursdag");
