@@ -8,23 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- RecyclerView to display the list of friends -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/visview"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- TextView for displaying information -->
-    <TextView
-        android:id="@+id/visview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Din venneliste" />
-
     <!-- EditText for Name -->
     <EditText
         android:id="@+id/navnEditText"
@@ -32,7 +15,9 @@
         android:layout_height="wrap_content"
         android:hint="Skriv inn navn"
         android:inputType="textPersonName"
-        app:layout_constraintTop_toBottomOf="@+id/visview" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- EditText for Phone -->
     <EditText
@@ -70,21 +55,13 @@
         android:text="Legg til"
         app:layout_constraintTop_toBottomOf="@+id/open_preferences_button" />
 
-    <!-- Button to change friend -->
-    <Button
-        android:id="@+id/endreVennKnapp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Endre venn"
-        app:layout_constraintTop_toBottomOf="@+id/leggtil" />
-
     <!-- EditText for deleting friend -->
     <EditText
         android:id="@+id/slettVennEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Skriv inn venns ID for sletting"
-        app:layout_constraintTop_toBottomOf="@+id/endreVennKnapp" />
+        app:layout_constraintTop_toBottomOf="@+id/leggtil" />
 
     <!-- Button to delete friend -->
     <Button
@@ -106,4 +83,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone" /> <!-- Initially hidden -->
 
+    <!-- RecyclerView to display the list of friends -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/slett"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

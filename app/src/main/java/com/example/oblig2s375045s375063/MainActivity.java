@@ -45,16 +45,11 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        Button openPreferencesButton = findViewById(R.id.open_preferences_button);
-        Button endreVennKnapp = findViewById(R.id.endreVennKnapp);
+        // Åpne databasen
+        dataKilde = new VennerDataKilde(this);
+        dataKilde.open();
 
-        // Onclick for endre venn knapp
-        endreVennKnapp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nyAktivitet(EditVenn.class);
-            }
-        });
+        Button openPreferencesButton = findViewById(R.id.open_preferences_button);
 
         // Sett OnClickListener for knappen
         openPreferencesButton.setOnClickListener(this::openPreferences);
@@ -70,19 +65,19 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         vennList = dataKilde.finnAlleVenner();
+
         vennAdapter = new VennAdapter(vennList, new VennAdapter.OnVennClickListener() {
             @Override
             public void onItemClick(Venn venn) {
                 Intent intent = new Intent(MainActivity.this, EditVenn.class);
                 intent.putExtra("vennId", venn.getId());
+                intent.putExtra("navn", venn.getNavn());
+                intent.putExtra("telefon", venn.getTelefon());
+                intent.putExtra("bursdag", venn.getBursdag());
                 startActivity(intent);
             }
         });
         recyclerView.setAdapter(vennAdapter);
-
-        // Åpne databasen
-        dataKilde = new VennerDataKilde(this);
-        dataKilde.open();
 
         // Finn EditTexts og TextView
         navnEditText = findViewById(R.id.navnEditText);
@@ -124,12 +119,6 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         }
     }
 
-    // Metode for å starte en ny aktivitet
-    private void nyAktivitet(Class k) {
-        Intent i = new Intent(this, k);
-        startActivity(i); // Starter aktiviteten
-    }
-
     private void openPreferences(View v) {
         // Skjul RecyclerView, knapper, og TextView
         recyclerView.setVisibility(View.GONE);
@@ -139,9 +128,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         findViewById(R.id.leggtil).setVisibility(View.GONE);
         findViewById(R.id.slett).setVisibility(View.GONE);
         findViewById(R.id.open_preferences_button).setVisibility(View.GONE); // Skjul preferanser knappen
-        findViewById(R.id.visview).setVisibility(View.GONE); // Skjul TextView
         findViewById(R.id.slettVennEditText).setVisibility(View.GONE);
-        findViewById(R.id.endreVennKnapp).setVisibility(View.GONE);
 
         // Åpne preferansefragmentet
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -165,9 +152,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             findViewById(R.id.leggtil).setVisibility(View.VISIBLE);
             findViewById(R.id.slett).setVisibility(View.VISIBLE);
             findViewById(R.id.open_preferences_button).setVisibility(View.VISIBLE); // Vis preferanser knappen
-            findViewById(R.id.visview).setVisibility(View.VISIBLE); // Vis TextView
             findViewById(R.id.slettVennEditText).setVisibility(View.VISIBLE);
-            findViewById(R.id.endreVennKnapp).setVisibility(View.VISIBLE);
         } else {
             // Hvis ingen fragmenter er i stakken, kjør standard atferd
             super.onBackPressed();

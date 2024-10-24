@@ -13,7 +13,7 @@ import java.util.List;
 
 public class VennAdapter extends RecyclerView.Adapter<VennAdapter.ViewHolder> {
     private List<Venn> vennList;
-    private OnVennClickListener listener; // Define the listener interface
+    private OnVennClickListener listener;
 
     public interface OnVennClickListener {
         void onItemClick(Venn venn);
@@ -21,20 +21,22 @@ public class VennAdapter extends RecyclerView.Adapter<VennAdapter.ViewHolder> {
 
     public VennAdapter(List<Venn> vennList, OnVennClickListener listener) {
         this.vennList = vennList;
-        this.listener = listener;
+        this.listener = listener; // Lagrer lytteren
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_venn, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.venn_item, parent, false);
         return new ViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Venn venn = vennList.get(position);
-        holder.bind(venn, listener);
+        holder.bind(venn, listener); // Passer lytteren til bind-metoden
     }
+
     @Override
     public int getItemCount() {
         return vennList.size();
@@ -58,17 +60,12 @@ public class VennAdapter extends RecyclerView.Adapter<VennAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                        Intent intent = new Intent(view.getContext(), EditVenn.class);
-                        intent.putExtra("vennId", venn.getId());
-                        intent.putExtra("navn", venn.getNavn());
-                        intent.putExtra("telefon", venn.getTelefon());
-                        intent.putExtra("bursdag", venn.getBursdag());
-                        view.getContext().startActivity(intent);
-                    }
+                    listener.onItemClick(venn); // Bruker lytteren
+                }
             });
         }
-
     }
 }
+
 
 
