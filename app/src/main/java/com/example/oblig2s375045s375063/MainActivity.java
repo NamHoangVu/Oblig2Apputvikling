@@ -1,18 +1,22 @@
 package com.example.oblig2s375045s375063;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -107,9 +111,15 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         filter.addAction("com.example.service.MITTSIGNAL");
         this.registerReceiver(myBroadcastReceiver,filter, Context.RECEIVER_EXPORTED);
 
-        // Sjekk SMS-tillatelse ved oppstart
+
         smsHandler = new SmsHandler(this);
-        smsHandler.sendSms("", "");  // Kan brukes til å trigge tillatelsessjekk ved oppstart
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            // Be om tillatelse
+            smsHandler.sendSms("", "");  // Dette vil initiere tillatelsessjekk
+        } else {
+            // Tillatelse allerede gitt, send en test SMS om nødvendig
+            Toast.makeText(this, "Tillatelse allerede gitt.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Metode for å starte en ny aktivitet
