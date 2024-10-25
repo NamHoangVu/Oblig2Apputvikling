@@ -171,22 +171,49 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
     // Legg til venn-funksjon
     public void leggtil(View v) {
-        String navn = navnEditText.getText().toString();
-        String telefon = telefonEditText.getText().toString();
-        String bursdag = bursdagEditText.getText().toString();
-        if (!navn.isEmpty() && !telefon.isEmpty() && !bursdag.isEmpty()) {
-            dataKilde.leggTilVenn(navn, telefon, bursdag);
+        String navn = navnEditText.getText().toString().trim();
+        String telefon = telefonEditText.getText().toString().trim();
+        String bursdag = bursdagEditText.getText().toString().trim();
 
-            // Oppdater vennelisten
-            vennList.clear();
-            vennList.addAll(dataKilde.finnAlleVenner());
-            vennAdapter.notifyDataSetChanged();
-
-            navnEditText.setText("");
-            telefonEditText.setText("");
-            bursdagEditText.setText("");
+        // Valider navn - må ikke være tomt og må ikke inneholde tall
+        if (navn.isEmpty() || !navn.matches("[a-zA-ZæøåÆØÅ ]+")) {
+            navnEditText.setError("Vennligst skriv inn et gyldig navn uten tall.");
+            return;
+        } else {
+            navnEditText.setError(null); // Fjern eventuell feilindikasjon
         }
+
+        // Valider telefon - må inneholde kun tall og ha riktig lengde (8 sifre for Norge)
+        if (telefon.isEmpty() || !telefon.matches("\\d{8}")) {
+            telefonEditText.setError("Vennligst skriv inn et gyldig telefonnummer (8 sifre).");
+            return;
+        } else {
+            telefonEditText.setError(null); // Fjern eventuell feilindikasjon
+        }
+
+        // Valider bursdag - må følge formatet dd/MM/yyyy
+        if (bursdag.isEmpty()) {
+            bursdagEditText.setError("Vennligst velg en dato");
+            return;
+        } else {
+            bursdagEditText.setError(null); // Fjern eventuell feilindikasjon
+        }
+
+        // Hvis alle felt er gyldige, legg til venn
+        dataKilde.leggTilVenn(navn, telefon, bursdag);
+
+        // Oppdater vennelisten
+        vennList.clear();
+        vennList.addAll(dataKilde.finnAlleVenner());
+        vennAdapter.notifyDataSetChanged();
+
+        // Tøm inputfeltene etter vellykket lagring
+        navnEditText.setText("");
+        telefonEditText.setText("");
+        bursdagEditText.setText("");
     }
+
+
 
     @Override
     protected void onResume() {
