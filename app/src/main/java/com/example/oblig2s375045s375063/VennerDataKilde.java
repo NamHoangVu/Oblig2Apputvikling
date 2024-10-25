@@ -58,7 +58,6 @@ public class VennerDataKilde {
         values.put(DatabaseHjelper.KOLONNE_TELEFON, telefon);
         values.put(DatabaseHjelper.KOLONNE_BURSDAG, bursdag);
 
-        // Oppdater posten som matcher vennId
         String whereClause = DatabaseHjelper.KOLONNE_ID + " = ?";
         String[] whereArgs = { String.valueOf(vennId) };
 
@@ -79,7 +78,7 @@ public class VennerDataKilde {
         return venner;
     }
 
-    // Ny metode for å hente venner som har bursdag i dag
+    // Metode for å hente venner som har bursdag i dag
     public List<Venn> hentVennerMedBursdag(String bursdagsdato) {
         List<Venn> vennerMedBursdag = new ArrayList<>();
 

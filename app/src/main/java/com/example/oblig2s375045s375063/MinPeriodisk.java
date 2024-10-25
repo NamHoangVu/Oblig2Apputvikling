@@ -24,13 +24,10 @@ public class MinPeriodisk extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("MinPeriodisk", "MinPeriodisk har startet.");
 
-        // Hent SharedPreferences med standardnavn
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.oblig2s375045s375063_preferences", MODE_PRIVATE);
 
-        // Hent tidspunktet fra SharedPreferences
         String time = sharedPreferences.getString("sms_time", "08:00");
 
-        // Split time into hour and minute
         String[] timeParts = time.split(":");
         if (timeParts.length == 2) {
             try {
@@ -72,6 +69,6 @@ public class MinPeriodisk extends Service {
             Log.e("MinPeriodisk", "Ugyldig tidformat fra SharedPreferences: " + time);
         }
 
-        return START_STICKY; // Sørg for at tjenesten blir gjenopprettet hvis systemet terminerer den
+        return START_STICKY;
     }
 }

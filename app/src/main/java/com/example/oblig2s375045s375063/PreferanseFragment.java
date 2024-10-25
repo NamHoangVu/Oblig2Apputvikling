@@ -38,15 +38,13 @@ public class PreferanseFragment extends PreferenceFragmentCompat {
             smsServiceSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean isChecked = (Boolean) newValue;
 
-                // Logg tilstanden til bryteren
                 Log.d("PreferanseFragment", "SMS-tjeneste er " + (isChecked ? "aktivert" : "deaktivert"));
 
-                // Send broadcast for å oppdatere MinBroadcastReceiver
                 Intent intent = new Intent(getContext(), MinBroadcastReceiver.class);
                 intent.putExtra("sms_service_enabled", isChecked);
                 getContext().sendBroadcast(intent);
 
-                return true;  // Returner true for å lagre endringen
+                return true;
             });
         }
 
@@ -65,10 +63,9 @@ public class PreferanseFragment extends PreferenceFragmentCompat {
                 // Lagre den nye meldingen i SharedPreferences
                 sharedPreferences.edit().putString("sms_message", newMessage).apply();
 
-                // Logg for å bekrefte at meldingen er endret
                 Log.d("PreferanseFragment", "Ny SMS-melding lagret: " + newMessage);
 
-                return true;  // Returner true for å lagre endringen
+                return true;
             });
         }
     }
@@ -93,7 +90,6 @@ public class PreferanseFragment extends PreferenceFragmentCompat {
                                 .putString("sms_time", selectedTime)
                                 .apply();
 
-                        // Logg for å bekrefte at tiden blir lagret
                         Log.d("PreferanseFragment", "Ny tid lagret i SharedPreferences: " + selectedTime);
 
                         // Start MinPeriodisk på nytt for å oppdatere alarmen

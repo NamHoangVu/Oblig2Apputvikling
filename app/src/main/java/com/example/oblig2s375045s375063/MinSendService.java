@@ -26,11 +26,9 @@ public class MinSendService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Initialiser databasen
         dataKilde = new VennerDataKilde(this);
         dataKilde.open();
 
-        // Initialiser SMS-handleren
         smsHandler = new SmsHandler(this);
 
         Log.d("MinSendService", "Service opprettet og databasen er åpnet.");
@@ -84,12 +82,10 @@ public class MinSendService extends Service {
             // Sett inn vennens navn i standardmeldingen
             String melding = standardMelding.replace("{navn}", navn);
 
-            // Logg informasjon før SMS sendes
             Log.d("MinSendService", "Sender melding til: " + navn + " på telefonnummer: " + telefonnummer);
 
             smsHandler.sendSms(telefonnummer, melding);
 
-            // Bekreft at melding er sendt
             Log.d("MinSendService", "Melding sendt til: " + navn);
         }
 

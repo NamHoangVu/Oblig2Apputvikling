@@ -1,70 +1,75 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".EditVenn">
 
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/navnTextView"
+    <!-- Vertikal layout for å holde elementene i rekkefølge -->
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/navnEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nytt navn"
-        android:inputType="textPersonName" />
+        <!-- Tekstvisning for navn -->
+        <TextView
+            android:id="@+id/navnTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/telefonTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        <!-- Tekstfelt for nytt navn -->
+        <EditText
+            android:id="@+id/navnEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nytt navn"
+            android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/telefonEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nytt telefonnummer"
-        android:inputType="phone" />
+        <!-- Tekstvisning for telefonnummer -->
+        <TextView
+            android:id="@+id/telefonTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/bursdagTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        <!-- Tekstfelt for nytt telefonnummer -->
+        <EditText
+            android:id="@+id/telefonEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nytt telefonnummer"
+            android:inputType="phone" />
 
-    <EditText
-        android:id="@+id/bursdagEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ny dato for bursdag"
-        android:inputType="date" />
+        <!-- Tekstvisning for bursdag -->
+        <TextView
+            android:id="@+id/bursdagTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/endreVennKnapp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Lagre endringer" />
+        <!-- Tekstfelt for ny bursdag -->
+        <EditText
+            android:id="@+id/bursdagEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ny dato for bursdag"
+            android:inputType="date" />
 
-    <!-- Button to delete friend -->
-    <Button
-        android:id="@+id/slettKnapp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="slett"
-        android:text="Slett venn"
-        android:backgroundTint="#FF0000"
-        app:layout_constraintTop_toBottomOf="@+id/endreVennKnapp" />
-</LinearLayout>
+        <!-- Knapp for å lagre endringer -->
+        <Button
+            android:id="@+id/endreVennKnapp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lagre endringer" />
 
+        <!-- Knapp for å slette venn -->
+        <Button
+            android:id="@+id/slettKnapp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="slett"
+            android:text="Slett venn"
+            android:backgroundTint="#FF0000"
+            app:layout_constraintTop_toBottomOf="@+id/endreVennKnapp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

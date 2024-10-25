@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- EditText for Name -->
+    <!-- EditText for navn -->
     <EditText
         android:id="@+id/navnEditText"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- EditText for Phone -->
+    <!-- EditText for telefonnummer -->
     <EditText
         android:id="@+id/telefonEditText"
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
         android:inputType="phone"
         app:layout_constraintTop_toBottomOf="@+id/navnEditText" />
 
-    <!-- EditText for Birthday -->
+    <!-- EditText for bursdag -->
     <EditText
         android:id="@+id/bursdagEditText"
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
         android:clickable="true"
         app:layout_constraintTop_toBottomOf="@+id/telefonEditText" />
 
-    <!-- Button to add friend -->
+    <!-- Knapp for å legge til venn -->
     <Button
         android:id="@+id/leggtil"
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
         android:text="Legg til"
         app:layout_constraintTop_toBottomOf="@+id/bursdagEditText" />
 
-    <!-- Button to open preferences -->
+    <!-- Knapp for å åpne preferanser -->
     <Button
         android:id="@+id/open_preferences_button"
         android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
         android:text="Preferanser"
         app:layout_constraintTop_toBottomOf="@+id/leggtil" />
 
-    <!-- Container for the Preference Fragment -->
+    <!-- Container for Preferanse-fragmentet -->
     <FrameLayout
         android:id="@+id/settings_container"
         android:layout_width="0dp"
@@ -66,7 +66,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone" />
 
-    <!-- RecyclerView to display the list of friends -->
+    <!-- RecyclerView for å vise vennelisten -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -77,4 +77,3 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

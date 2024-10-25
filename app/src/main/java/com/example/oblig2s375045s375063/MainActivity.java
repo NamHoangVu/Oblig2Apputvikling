@@ -46,13 +46,11 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
         createNotificationChannel();
 
-        // Åpne databasen
         dataKilde = new VennerDataKilde(this);
         dataKilde.open();
 
         Button openPreferencesButton = findViewById(R.id.open_preferences_button);
 
-        // Sett OnClickListener for knappen
         openPreferencesButton.setOnClickListener(this::openPreferences);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -80,12 +78,11 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         });
         recyclerView.setAdapter(vennAdapter);
 
-        // Finn EditTexts og TextView
         navnEditText = findViewById(R.id.navnEditText);
         telefonEditText = findViewById(R.id.telefonEditText);
         bursdagEditText = findViewById(R.id.bursdagEditText);
 
-        // Set up DatePickerDialog for bursdagEditText
+        // Setter opp DatePickerDialog for bursdagEditText
         bursdagEditText.setOnClickListener(v -> {
             // Få dagens dato som standard
             final Calendar calendar = Calendar.getInstance();
@@ -93,10 +90,8 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
 
-            // Åpne DatePickerDialog
             DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
-                        // Oppdater EditText med den valgte datoen
                         bursdagEditText.setText(selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear);
                     }, year, month, day);
             datePickerDialog.show();
@@ -112,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         smsHandler = new SmsHandler(this);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             // Be om tillatelse
-            smsHandler.sendSms("", "");  // Dette vil initiere tillatelsessjekk
+            smsHandler.sendSms("", "");
         }
     }
 
@@ -130,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
 
 
     private void openPreferences(View v) {
-        // Skjul RecyclerView, knapper, og TextView
         recyclerView.setVisibility(View.GONE);
         findViewById(R.id.navnEditText).setVisibility(View.GONE);
         findViewById(R.id.telefonEditText).setVisibility(View.GONE);
@@ -152,18 +146,15 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     public void onBackPressed() {
         // Sjekk om det er fragmenter i tilbake-stakken
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            // Fjern det øverste fragmentet
             getSupportFragmentManager().popBackStack();
 
-            // Vis RecyclerView, knapper, og TextView igjen
             recyclerView.setVisibility(View.VISIBLE);
             findViewById(R.id.navnEditText).setVisibility(View.VISIBLE);
             findViewById(R.id.telefonEditText).setVisibility(View.VISIBLE);
             findViewById(R.id.bursdagEditText).setVisibility(View.VISIBLE);
             findViewById(R.id.leggtil).setVisibility(View.VISIBLE);
-            findViewById(R.id.open_preferences_button).setVisibility(View.VISIBLE); // Vis preferanser knappen
+            findViewById(R.id.open_preferences_button).setVisibility(View.VISIBLE);
         } else {
-            // Hvis ingen fragmenter er i stakken, kjør standard atferd
             super.onBackPressed();
         }
     }
@@ -186,28 +177,28 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         String telefon = telefonEditText.getText().toString().trim();
         String bursdag = bursdagEditText.getText().toString().trim();
 
-        // Valider navn - må ikke være tomt og må ikke inneholde tall
+        // Input validering for navn
         if (navn.isEmpty() || !navn.matches("[a-zA-ZæøåÆØÅ ]+")) {
             navnEditText.setError("Vennligst skriv inn et gyldig navn uten tall.");
             return;
         } else {
-            navnEditText.setError(null); // Fjern eventuell feilindikasjon
+            navnEditText.setError(null);
         }
 
-        // Valider telefon - må inneholde kun tall og ha riktig lengde (8 sifre for Norge)
+        // Input validering for telefon
         if (telefon.isEmpty() || !telefon.matches("\\d{8}")) {
             telefonEditText.setError("Vennligst skriv inn et gyldig telefonnummer (8 sifre).");
             return;
         } else {
-            telefonEditText.setError(null); // Fjern eventuell feilindikasjon
+            telefonEditText.setError(null);
         }
 
-        // Valider bursdag - må følge formatet dd/MM/yyyy
+        // Input validering for bursdag
         if (bursdag.isEmpty()) {
             bursdagEditText.setError("Vennligst velg en dato");
             return;
         } else {
-            bursdagEditText.setError(null); // Fjern eventuell feilindikasjon
+            bursdagEditText.setError(null);
         }
 
         // Hvis alle felt er gyldige, legg til venn

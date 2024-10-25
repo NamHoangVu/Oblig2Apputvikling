@@ -97,7 +97,7 @@ public class EditVenn extends AppCompatActivity {
             datePickerDialog.show();
         });
 
-        Button slettKnapp = findViewById(R.id.slettKnapp); // Sørg for at knappen eksisterer i layout
+        Button slettKnapp = findViewById(R.id.slettKnapp);
         slettKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

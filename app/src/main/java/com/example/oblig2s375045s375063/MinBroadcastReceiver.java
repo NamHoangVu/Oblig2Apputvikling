@@ -21,7 +21,6 @@ public class MinBroadcastReceiver extends BroadcastReceiver {
             context.startService(serviceIntent);
         } else {
             context.stopService(serviceIntent);
-            // Du kan også sende en melding til Logcat for å bekrefte stoppet
             Log.d("Receive", "Tjenesten stoppet.");
 
             Intent alarmIntent = new Intent(context, MinBroadcastReceiver.class);

@@ -20,7 +20,7 @@ public class VennAdapter extends RecyclerView.Adapter<VennAdapter.ViewHolder> {
 
     public VennAdapter(List<Venn> vennList, OnVennClickListener listener) {
         this.vennList = vennList;
-        this.listener = listener; // Lagrer lytteren
+        this.listener = listener;
     }
 
     @NonNull
@@ -33,7 +33,7 @@ public class VennAdapter extends RecyclerView.Adapter<VennAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Venn venn = vennList.get(position);
-        holder.bind(venn, listener); // Passer lytteren til bind-metoden
+        holder.bind(venn, listener);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class VennAdapter extends RecyclerView.Adapter<VennAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onItemClick(venn); // Bruker lytteren
+                    listener.onItemClick(venn);
                 }
             });
         }
