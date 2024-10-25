@@ -2,6 +2,8 @@ package com.example.oblig2s375045s375063;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -39,11 +41,15 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
     private VennerDataKilde dataKilde;
     private EditText navnEditText, telefonEditText, bursdagEditText;
 
+    String CHANNEL_ID = "MinKanal";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        createNotificationChannel();
 
         // Åpne databasen
         dataKilde = new VennerDataKilde(this);
@@ -117,6 +123,19 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
             Toast.makeText(this, "Tillatelse allerede gitt.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void createNotificationChannel() {
+        CharSequence name = getString(R.string.channel_name);
+        String description = getString(R.string.channel_description);
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new
+                NotificationChannel(CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        NotificationManager notificationManager =
+                getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+    }
+
 
     private void openPreferences(View v) {
         // Skjul RecyclerView, knapper, og TextView

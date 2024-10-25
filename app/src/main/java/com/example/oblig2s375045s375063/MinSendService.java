@@ -1,5 +1,8 @@
 package com.example.oblig2s375045s375063;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +10,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
@@ -41,6 +45,19 @@ public class MinSendService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("MinSendService", "Service startet.");
+
+        NotificationManager notificationManager = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
+        Intent i = new Intent(this, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_IMMUTABLE);
+        Notification notifikasjon = new NotificationCompat.Builder(this,"MinKanal")
+                .setContentTitle("Bursdagsmelding")
+                .setContentText("Bursdagsmelding er sendt!")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pIntent).build();
+        notifikasjon.flags |= Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify(88, notifikasjon);
 
         // Hent dagens dato
         Calendar calendar = Calendar.getInstance();
