@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.Preference;
 import androidx.preference.SwitchPreferenceCompat;
-import androidx.preference.EditTextPreference;  // Legg til denne importen
+import androidx.preference.EditTextPreference;
 import android.app.TimePickerDialog;
 import android.util.Log;
 import java.util.Calendar;

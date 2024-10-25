@@ -13,8 +13,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,13 +20,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -118,9 +113,6 @@ public class MainActivity extends AppCompatActivity implements VennAdapter.OnVen
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             // Be om tillatelse
             smsHandler.sendSms("", "");  // Dette vil initiere tillatelsessjekk
-        } else {
-            // Tillatelse allerede gitt, send en test SMS om nødvendig
-            Toast.makeText(this, "Tillatelse allerede gitt.", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -10,8 +10,6 @@ import android.util.Log;
 public class MinBroadcastReceiver extends BroadcastReceiver {
     public MinBroadcastReceiver() {}
 
-    private MainActivity mainActivity;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         boolean isEnabled = intent.getBooleanExtra("sms_service_enabled", false);
