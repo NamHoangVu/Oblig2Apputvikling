@@ -84,8 +84,8 @@ public class VennerDataKilde {
         List<Venn> vennerMedBursdag = new ArrayList<>();
 
         // SQL-spørring for å finne venner med bursdag på en bestemt dato
-        String selection = DatabaseHjelper.KOLONNE_BURSDAG + " = ?";
-        String[] selectionArgs = { bursdagsdato };
+        String selection = DatabaseHjelper.KOLONNE_BURSDAG + " LIKE ?";
+        String[] selectionArgs = { bursdagsdato + "/%" };
 
         Cursor cursor = database.query(DatabaseHjelper.TABELL_VENNER, null, selection, selectionArgs, null, null, null);
 
